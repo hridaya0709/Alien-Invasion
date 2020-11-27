@@ -4,6 +4,7 @@ import pygame
 
 from bullet import Bullet
 from alien import Alien
+from pygame import mixer
 
 def check_keydown_events(event,ai_settings,screen,ship,bullets):
     """Respond to keypresses."""
@@ -114,6 +115,7 @@ def check_bullet_alien_collisions(ai_settings,screen,stats,sb,ship,aliens,bullet
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
 
     if collisions:
+        bg_music("bullet alien collision.mp3")
         for aliens in collisions.values():
             stats.score += ai_settings.alien_points * len(aliens)
             sb.prep_score()
@@ -123,6 +125,7 @@ def check_bullet_alien_collisions(ai_settings,screen,stats,sb,ship,aliens,bullet
         # If the entire fleet is destroyed, start a new level.
         bullets.empty()
         ai_settings.increase_speed()
+        bg_music("level up.mp3")
 
         # Increase level.
         stats.level += 1
@@ -165,6 +168,7 @@ def create_fleet(ai_settings,screen,ship,aliens):
 
 def ship_hit(ai_settings,screen,stats,sb,ship,aliens,bullets):
     """respond to ship being hit by alien."""
+    bg_music("ship alien collision.mp3")
     if stats.ships_left > 0:
         # Decrement ships_left.
         stats.ships_left -= 1
@@ -183,6 +187,7 @@ def ship_hit(ai_settings,screen,stats,sb,ship,aliens,bullets):
         # Pause
         sleep(0.5)
     else:
+        bg_music("game end.mp3")
         stats.game_active = False
         pygame.mouse.set_visible(True)
 
@@ -228,3 +233,9 @@ def check_high_score(stats,sb):
     if stats.score > stats.high_score:
         stats.high_score = stats.score
         sb.prep_high_score()
+        
+def bg_music(x):
+    mixer.init()
+    mixer.music.load(x)
+    mixer.music.set_volume(0.7)
+    mixer.music.play()
