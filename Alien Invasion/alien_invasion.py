@@ -14,6 +14,7 @@ def run_game():
     ai_settings = Settings()
     screen = pygame.display.set_mode((ai_settings.screen_width,ai_settings.screen_height))
     pygame.display.set_caption("Alien Invasion")
+    gf.bg_music("game start.mp3")
 
     # Make the Play button.
     play_button = Button(ai_settings,screen,"Play")
