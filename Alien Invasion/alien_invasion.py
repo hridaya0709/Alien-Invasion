@@ -30,6 +30,10 @@ def run_game():
 
     # Create the fleet of aliens.
     gf.create_fleet(ai_settings,screen,ship,aliens)
+    gf.load_score(stats)
+    sb.prep_high_score()
+    sb.show_score()
+
 
     # Start the main loop for the game.
     while True:
